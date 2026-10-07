@@ -1,0 +1,3 @@
+import { env } from 'cloudflare:workers';
+import { access, rules, json } from '../../../lib/access';
+export async function GET() {const user=await access();if(!user)return json({error:'Acesso não autorizado. Entre com uma conta cadastrada.'},401);const fleets=await env.DB!.prepare('SELECT f.*, COALESCE(MAX(r.engine),0) AS last_engine, COALESCE(MAX(r.elevator),0) AS last_elevator, COALESCE(MAX(r.km),0) AS last_km FROM fleets f LEFT JOIN records r ON r.fleet=f.id GROUP BY f.id ORDER BY f.id').all();return json({user:{name:user.displayName,email:user.email,id:user.userId,role:user.role},fleets:fleets.results,rules:await rules()});}

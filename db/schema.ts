@@ -1,0 +1,5 @@
+import { sqliteTable, text, real, integer } from "drizzle-orm/sqlite-core";
+export const members = sqliteTable("members", { email: text("email").primaryKey(), userId: text("user_id"), role: text("role").notNull(), name: text("name").notNull() });
+export const fleets = sqliteTable("fleets", { id: text("id").primaryKey(), name: text("name").notNull(), type: text("type").notNull(), active: integer("active").notNull().default(1) });
+export const settings = sqliteTable("settings", { id: text("id").primaryKey(), value: text("value").notNull() });
+export const records = sqliteTable("records", { id: text("id").primaryKey(), fleet: text("fleet").notNull(), date: text("date").notNull(), operator: text("operator").notNull(), userId: text("user_id").notNull(), engine: real("engine"), elevator: real("elevator"), km: real("km"), start: real("start").notNull(), end: real("end").notNull(), liters: real("liters").notNull(), signature: text("signature").notNull(), notes: text("notes").notNull(), createdAt: text("created_at").notNull(), receivedAt: text("received_at").notNull() });

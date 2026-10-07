@@ -1,0 +1,1232 @@
+[
+  {
+    "id": "17",
+    "name": "RAM 3500",
+    "type": "Outro"
+  },
+  {
+    "id": "22",
+    "name": "FORD F150",
+    "type": "Outro"
+  },
+  {
+    "id": "85",
+    "name": "JD TRATOR 5078E",
+    "type": "Trator"
+  },
+  {
+    "id": "500",
+    "name": "STRADA 2016 A 2019",
+    "type": "Outro"
+  },
+  {
+    "id": "501",
+    "name": "STRADA 2016 A 2019",
+    "type": "Outro"
+  },
+  {
+    "id": "502",
+    "name": "VW KOMBI",
+    "type": "Outro"
+  },
+  {
+    "id": "503",
+    "name": "MARCOPOLO VOLARE V8L",
+    "type": "Outro"
+  },
+  {
+    "id": "504",
+    "name": "MARCOPOLO VOLARE V8L",
+    "type": "Outro"
+  },
+  {
+    "id": "505",
+    "name": "HILLUX 2012 A 2015 MANUAL",
+    "type": "Outro"
+  },
+  {
+    "id": "506",
+    "name": "HILLUX ACIMA 2016",
+    "type": "Outro"
+  },
+  {
+    "id": "507",
+    "name": "HILLUX 2012 A 2015 AUTOMATICA",
+    "type": "Outro"
+  },
+  {
+    "id": "508",
+    "name": "STRADA 2016 A 2019",
+    "type": "Outro"
+  },
+  {
+    "id": "509",
+    "name": "S10 LTS DD4A AUTOMATICA",
+    "type": "Outro"
+  },
+  {
+    "id": "510",
+    "name": "HILLUX 2012 A 2015 AUTOMATICA",
+    "type": "Outro"
+  },
+  {
+    "id": "511",
+    "name": "FIAT UNO ATTRACTIVE",
+    "type": "Outro"
+  },
+  {
+    "id": "512",
+    "name": "S10 LS FS2 MANUAL",
+    "type": "Outro"
+  },
+  {
+    "id": "513",
+    "name": "HILLUX 2012 A 2015 AUTOMATICA",
+    "type": "Outro"
+  },
+  {
+    "id": "514",
+    "name": "SPRINTER MICROONIBUS",
+    "type": "Outro"
+  },
+  {
+    "id": "515",
+    "name": "HILLUX 2012 A 2015 AUTOMATICA",
+    "type": "Outro"
+  },
+  {
+    "id": "516",
+    "name": "HILUX 2020 A 2024 MANUAL",
+    "type": "Outro"
+  },
+  {
+    "id": "517",
+    "name": "FORD F 350",
+    "type": "Outro"
+  },
+  {
+    "id": "518",
+    "name": "HILLUX 2012 A 2015 AUTOMATICA",
+    "type": "Outro"
+  },
+  {
+    "id": "519",
+    "name": "DOBLO ESSENCE 7L E",
+    "type": "Outro"
+  },
+  {
+    "id": "520",
+    "name": "FIORINO ENDURANCE",
+    "type": "Outro"
+  },
+  {
+    "id": "521",
+    "name": "HILUX 2020 A 2024 MANUAL",
+    "type": "Outro"
+  },
+  {
+    "id": "522",
+    "name": "FIAT UNO MILLE",
+    "type": "Outro"
+  },
+  {
+    "id": "523",
+    "name": "S10 LTS DD4A AUTOMATICA",
+    "type": "Outro"
+  },
+  {
+    "id": "524",
+    "name": "FIAT UNO ATTRACTIVE",
+    "type": "Outro"
+  },
+  {
+    "id": "525",
+    "name": "SPRINTER MICROONIBUS",
+    "type": "Outro"
+  },
+  {
+    "id": "526",
+    "name": "9.150 IBRAVA APOLLO",
+    "type": "Outro"
+  },
+  {
+    "id": "527",
+    "name": "9.150 IBRAVA APOLLO",
+    "type": "Outro"
+  },
+  {
+    "id": "528",
+    "name": "FIAT STRADA FREEDOM",
+    "type": "Outro"
+  },
+  {
+    "id": "529",
+    "name": "FIAT UNO ATTRACTIVE",
+    "type": "Outro"
+  },
+  {
+    "id": "530",
+    "name": "S10 LS FS2 MANUAL",
+    "type": "Outro"
+  },
+  {
+    "id": "531",
+    "name": "FUSCA",
+    "type": "Outro"
+  },
+  {
+    "id": "532",
+    "name": "M. BENS/COMIL CAMPIO",
+    "type": "Outro"
+  },
+  {
+    "id": "533",
+    "name": "HILLUX 2012 A 2015 AUTOMATICA",
+    "type": "Outro"
+  },
+  {
+    "id": "534",
+    "name": "FIAT STRADA FREEDOM",
+    "type": "Outro"
+  },
+  {
+    "id": "535",
+    "name": "FIAT STRADA FREEDOM",
+    "type": "Outro"
+  },
+  {
+    "id": "536",
+    "name": "FIAT PALIO FIRE ECO",
+    "type": "Outro"
+  },
+  {
+    "id": "537",
+    "name": "HILUX 2020 A 2024 MANUAL",
+    "type": "Outro"
+  },
+  {
+    "id": "538",
+    "name": "HILUX 2020 A 2024 MANUAL",
+    "type": "Outro"
+  },
+  {
+    "id": "539",
+    "name": "M. BENZ/INDUSCAR PICCO",
+    "type": "Outro"
+  },
+  {
+    "id": "540",
+    "name": "S10 LTS DD4A AUTOMATICA",
+    "type": "Outro"
+  },
+  {
+    "id": "541",
+    "name": "S10 LS DS4 MANUAL",
+    "type": "Outro"
+  },
+  {
+    "id": "542",
+    "name": "HILLUX 2012 A 2015 AUTOMATICA",
+    "type": "Outro"
+  },
+  {
+    "id": "543",
+    "name": "FIAT STRADA ENDURANCE",
+    "type": "Outro"
+  },
+  {
+    "id": "544",
+    "name": "FIAT STRADA ENDURANCE",
+    "type": "Outro"
+  },
+  {
+    "id": "545",
+    "name": "FIAT STRADA ENDURANCE",
+    "type": "Outro"
+  },
+  {
+    "id": "546",
+    "name": "S10 LTS DD4A AUTOMATICA",
+    "type": "Outro"
+  },
+  {
+    "id": "547",
+    "name": "S10 LTS DD4A AUTOMATICA",
+    "type": "Outro"
+  },
+  {
+    "id": "548",
+    "name": "HILLUX 2012 A 2015 AUTOMATICA",
+    "type": "Outro"
+  },
+  {
+    "id": "549",
+    "name": "HILLUX 2008 AUTOMATICA",
+    "type": "Outro"
+  },
+  {
+    "id": "550",
+    "name": "M.BENZ/MPOLO TORINO U",
+    "type": "Outro"
+  },
+  {
+    "id": "551",
+    "name": "ONIBUS VW/15190 EOD ESCOLAR HD",
+    "type": "Outro"
+  },
+  {
+    "id": "600",
+    "name": "JD TRATOR 6180J",
+    "type": "Trator"
+  },
+  {
+    "id": "601",
+    "name": "JD TRATOR 6180J",
+    "type": "Trator"
+  },
+  {
+    "id": "602",
+    "name": "JD TRATOR 6180J",
+    "type": "Trator"
+  },
+  {
+    "id": "603",
+    "name": "JD TRATOR 6180J",
+    "type": "Trator"
+  },
+  {
+    "id": "604",
+    "name": "JD TRATOR 7225J",
+    "type": "Trator"
+  },
+  {
+    "id": "605",
+    "name": "JD TRATOR 7225J",
+    "type": "Trator"
+  },
+  {
+    "id": "606",
+    "name": "JD TRATOR 7225J",
+    "type": "Trator"
+  },
+  {
+    "id": "607",
+    "name": "JD TRATOR 6190J",
+    "type": "Trator"
+  },
+  {
+    "id": "608",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "609",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "610",
+    "name": "JD TRATOR 7210J",
+    "type": "Trator"
+  },
+  {
+    "id": "611",
+    "name": "VALTRA BH140",
+    "type": "Trator"
+  },
+  {
+    "id": "612",
+    "name": "VALTRA TRATOR BH 180",
+    "type": "Trator"
+  },
+  {
+    "id": "616",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "617",
+    "name": "VALTRA TRATOR BH 194",
+    "type": "Trator"
+  },
+  {
+    "id": "618",
+    "name": "VALTRA TRATOR BH 194",
+    "type": "Trator"
+  },
+  {
+    "id": "619",
+    "name": "PULVERIZADOR JD M4025",
+    "type": "Outro"
+  },
+  {
+    "id": "620",
+    "name": "TRATOR JD6110 POLICANA",
+    "type": "Trator"
+  },
+  {
+    "id": "622",
+    "name": "JD TRATOR 7500",
+    "type": "Trator"
+  },
+  {
+    "id": "623",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "624",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "625",
+    "name": "TRATOR JD 5070E",
+    "type": "Trator"
+  },
+  {
+    "id": "626",
+    "name": "TRATOR JD 5070E",
+    "type": "Trator"
+  },
+  {
+    "id": "627",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "628",
+    "name": "JD TRATOR 7230J",
+    "type": "Trator"
+  },
+  {
+    "id": "629",
+    "name": "JD 7515",
+    "type": "Trator"
+  },
+  {
+    "id": "630",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "631",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "632",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "633",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "634",
+    "name": "JD 7515",
+    "type": "Trator"
+  },
+  {
+    "id": "635",
+    "name": "JD TRATOR 6190J",
+    "type": "Trator"
+  },
+  {
+    "id": "636",
+    "name": "CARREGADEIRA CANA BM 100",
+    "type": "Trator"
+  },
+  {
+    "id": "637",
+    "name": "JD TRATOR 7210J",
+    "type": "Trator"
+  },
+  {
+    "id": "638",
+    "name": "JD TRATOR 7210J",
+    "type": "Trator"
+  },
+  {
+    "id": "639",
+    "name": "JD TRATOR 7210J",
+    "type": "Trator"
+  },
+  {
+    "id": "640",
+    "name": "JD TRATOR 7230J",
+    "type": "Trator"
+  },
+  {
+    "id": "641",
+    "name": "JD TRATOR 7230J",
+    "type": "Trator"
+  },
+  {
+    "id": "642",
+    "name": "JD TRATOR 7230J",
+    "type": "Trator"
+  },
+  {
+    "id": "643",
+    "name": "JD TRATOR 7230J",
+    "type": "Trator"
+  },
+  {
+    "id": "644",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "645",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "646",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "648",
+    "name": "JD 6190",
+    "type": "Trator"
+  },
+  {
+    "id": "649",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "650",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "651",
+    "name": "JD TRATOR 7200J",
+    "type": "Trator"
+  },
+  {
+    "id": "652",
+    "name": "JD 7200/7230",
+    "type": "Trator"
+  },
+  {
+    "id": "653",
+    "name": "JD 7200/7230",
+    "type": "Trator"
+  },
+  {
+    "id": "654",
+    "name": "JD 7200/7230",
+    "type": "Trator"
+  },
+  {
+    "id": "655",
+    "name": "JD 7200/7230",
+    "type": "Trator"
+  },
+  {
+    "id": "656",
+    "name": "JD TRATOR 6190J",
+    "type": "Trator"
+  },
+  {
+    "id": "657",
+    "name": "JD 7200/7230",
+    "type": "Trator"
+  },
+  {
+    "id": "658",
+    "name": "JD 7200/7230",
+    "type": "Trator"
+  },
+  {
+    "id": "659",
+    "name": "JD 7200/7230",
+    "type": "Trator"
+  },
+  {
+    "id": "660",
+    "name": "CARREGADEIRA L60F",
+    "type": "Trator"
+  },
+  {
+    "id": "661",
+    "name": "TRATOR 5070E-5080E",
+    "type": "Trator"
+  },
+  {
+    "id": "662",
+    "name": "TRATOR 5070E-5080E",
+    "type": "Trator"
+  },
+  {
+    "id": "663",
+    "name": "JD TRATOR 5090E",
+    "type": "Trator"
+  },
+  {
+    "id": "664",
+    "name": "JD TRATOR 5090E",
+    "type": "Trator"
+  },
+  {
+    "id": "665",
+    "name": "JD 7200/7230",
+    "type": "Trator"
+  },
+  {
+    "id": "666",
+    "name": "JONH DEERE 7M230",
+    "type": "Trator"
+  },
+  {
+    "id": "667",
+    "name": "JONH DEERE 7M230",
+    "type": "Trator"
+  },
+  {
+    "id": "668",
+    "name": "JONH DEERE 7M230",
+    "type": "Trator"
+  },
+  {
+    "id": "670",
+    "name": "MOTONIVELADORA G9190H",
+    "type": "Outro"
+  },
+  {
+    "id": "680",
+    "name": "ESCAVADEIRA EC140 DLM",
+    "type": "Outro"
+  },
+  {
+    "id": "700",
+    "name": "MB AXOR 3131 P/ HS",
+    "type": "Caminhão"
+  },
+  {
+    "id": "701",
+    "name": "MB AXOR 3131 P/ HS",
+    "type": "Caminhão"
+  },
+  {
+    "id": "702",
+    "name": "MB AXOR 3131 P/ HS",
+    "type": "Caminhão"
+  },
+  {
+    "id": "704",
+    "name": "MB AXOR 3131 P/ HS",
+    "type": "Caminhão"
+  },
+  {
+    "id": "705",
+    "name": "MB 3133/48",
+    "type": "Caminhão"
+  },
+  {
+    "id": "706",
+    "name": "MB 3133/48",
+    "type": "Caminhão"
+  },
+  {
+    "id": "707",
+    "name": "MB ATEGO 2730/48 HS",
+    "type": "Caminhão"
+  },
+  {
+    "id": "710",
+    "name": "MB ATEGO 2730/48 HS",
+    "type": "Caminhão"
+  },
+  {
+    "id": "711",
+    "name": "MB ATEGO 2730/48 HS",
+    "type": "Caminhão"
+  },
+  {
+    "id": "712",
+    "name": "VOLVO VM 360 6X4R",
+    "type": "Caminhão"
+  },
+  {
+    "id": "713",
+    "name": "VOLVO VM 360 6X4R",
+    "type": "Caminhão"
+  },
+  {
+    "id": "714",
+    "name": "VOLVO VM 360 6X4R",
+    "type": "Caminhão"
+  },
+  {
+    "id": "715",
+    "name": "VOLVO VM 360 6X4R",
+    "type": "Caminhão"
+  },
+  {
+    "id": "716",
+    "name": "VOLVO VM 360 6X4R",
+    "type": "Caminhão"
+  },
+  {
+    "id": "717",
+    "name": "VOLVO VM 360 6X4R",
+    "type": "Caminhão"
+  },
+  {
+    "id": "718",
+    "name": "VOLVO VM 360 6X4R",
+    "type": "Caminhão"
+  },
+  {
+    "id": "719",
+    "name": "VOLVO VM 360 6X4R",
+    "type": "Caminhão"
+  },
+  {
+    "id": "720",
+    "name": "VOLVO VM 360 6X4R",
+    "type": "Caminhão"
+  },
+  {
+    "id": "721",
+    "name": "VOLVO VM 360 6X4R",
+    "type": "Caminhão"
+  },
+  {
+    "id": "722",
+    "name": "VOLVO VM 360 6X4R",
+    "type": "Caminhão"
+  },
+  {
+    "id": "800",
+    "name": "MB ATRON 1319",
+    "type": "Caminhão"
+  },
+  {
+    "id": "801",
+    "name": "MB ATRON 1319",
+    "type": "Caminhão"
+  },
+  {
+    "id": "802",
+    "name": "MB ATEGO 1418",
+    "type": "Caminhão"
+  },
+  {
+    "id": "803",
+    "name": "VW 13.180 EURO3 WORK",
+    "type": "Caminhão"
+  },
+  {
+    "id": "804",
+    "name": "MB ATRON 2729",
+    "type": "Caminhão"
+  },
+  {
+    "id": "805",
+    "name": "MB ATRON 2729",
+    "type": "Caminhão"
+  },
+  {
+    "id": "806",
+    "name": "VW 26.280 CRM 6X4",
+    "type": "Caminhão"
+  },
+  {
+    "id": "807",
+    "name": "VW/26.260 E",
+    "type": "Caminhão"
+  },
+  {
+    "id": "808",
+    "name": "VW/26.260 E",
+    "type": "Caminhão"
+  },
+  {
+    "id": "809",
+    "name": "VW/26.260 E",
+    "type": "Caminhão"
+  },
+  {
+    "id": "810",
+    "name": "MB L 1318",
+    "type": "Caminhão"
+  },
+  {
+    "id": "811",
+    "name": "MB 2726 6X4",
+    "type": "Caminhão"
+  },
+  {
+    "id": "812",
+    "name": "AXOR  2644 S/36",
+    "type": "Caminhão"
+  },
+  {
+    "id": "813",
+    "name": "MB LS 1935",
+    "type": "Caminhão"
+  },
+  {
+    "id": "814",
+    "name": "VW / 7.110 S",
+    "type": "Caminhão"
+  },
+  {
+    "id": "815",
+    "name": "VW / 8.140",
+    "type": "Caminhão"
+  },
+  {
+    "id": "816",
+    "name": "MB 2726 6X4",
+    "type": "Caminhão"
+  },
+  {
+    "id": "817",
+    "name": "VW/15.190 CRM 4X2 4P",
+    "type": "Caminhão"
+  },
+  {
+    "id": "818",
+    "name": "M.BENZ/2423",
+    "type": "Caminhão"
+  },
+  {
+    "id": "819",
+    "name": "M. BENZ/ACCELO 815",
+    "type": "Caminhão"
+  },
+  {
+    "id": "820",
+    "name": "MB ATEGO 2730/48 HS",
+    "type": "Caminhão"
+  },
+  {
+    "id": "821",
+    "name": "MB ATEGO 3026/54",
+    "type": "Caminhão"
+  },
+  {
+    "id": "822",
+    "name": "M. BENZ/L 2318",
+    "type": "Caminhão"
+  },
+  {
+    "id": "823",
+    "name": "M.BENZ/1720",
+    "type": "Caminhão"
+  },
+  {
+    "id": "824",
+    "name": "VW 32360",
+    "type": "Caminhão"
+  },
+  {
+    "id": "825",
+    "name": "MB ATRON 2729",
+    "type": "Caminhão"
+  },
+  {
+    "id": "826",
+    "name": "MB ATRON 2729",
+    "type": "Caminhão"
+  },
+  {
+    "id": "827",
+    "name": "MERCEDES BENZ 1718",
+    "type": "Caminhão"
+  },
+  {
+    "id": "828",
+    "name": "MERCEDES BENZ 1718",
+    "type": "Caminhão"
+  },
+  {
+    "id": "829",
+    "name": "VW/5.140E DELIVERY",
+    "type": "Caminhão"
+  },
+  {
+    "id": "830",
+    "name": "MB ATEGO 1719",
+    "type": "Caminhão"
+  },
+  {
+    "id": "831",
+    "name": "VW/15.190 CRM 4X2 4P",
+    "type": "Caminhão"
+  },
+  {
+    "id": "832",
+    "name": "MB ATEGO 2730/48 HS",
+    "type": "Caminhão"
+  },
+  {
+    "id": "833",
+    "name": "MB ATEGO 2730/48 HS",
+    "type": "Caminhão"
+  },
+  {
+    "id": "834",
+    "name": "VW 31320 6X4",
+    "type": "Caminhão"
+  },
+  {
+    "id": "835",
+    "name": "VW 31320 6X4",
+    "type": "Caminhão"
+  },
+  {
+    "id": "836",
+    "name": "VW 31320 6X4",
+    "type": "Caminhão"
+  },
+  {
+    "id": "837",
+    "name": "MB ATEGO 1418",
+    "type": "Caminhão"
+  },
+  {
+    "id": "838",
+    "name": "MB 2726 6X4",
+    "type": "Caminhão"
+  },
+  {
+    "id": "1001",
+    "name": "JD COLHEDORA 3520",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1002",
+    "name": "JD COLHEDORA 3520",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1003",
+    "name": "JD COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1004",
+    "name": "JD COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1005",
+    "name": "JD COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1006",
+    "name": "JD COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1007",
+    "name": "JD COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1008",
+    "name": "JD COLHEDORA 3520",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1009",
+    "name": "JD COLHEDORA 3520",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1010",
+    "name": "JD COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1011",
+    "name": "JD COLHEDORA 3520",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1012",
+    "name": "JD COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1013",
+    "name": "JD COLHEDORA 3520",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1014",
+    "name": "JD COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1015",
+    "name": "JD COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1016",
+    "name": "JD COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1017",
+    "name": "JD COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1018",
+    "name": "JD COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1019",
+    "name": "JD COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1020",
+    "name": "JD COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1021",
+    "name": "JD COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1023",
+    "name": "JD COLHEDORA 3520",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1024",
+    "name": "JD COLHEDORA 3520",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1025",
+    "name": "COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1026",
+    "name": "COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1027",
+    "name": "JD COLHEDORA 3520",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1028",
+    "name": "COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1029",
+    "name": "COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "1030",
+    "name": "COLHEDORA CH570",
+    "type": "Colhedora"
+  },
+  {
+    "id": "2017",
+    "name": "AMAROK",
+    "type": "Outro"
+  },
+  {
+    "id": "2018",
+    "name": "S10 LS DS4 MANUAL",
+    "type": "Outro"
+  },
+  {
+    "id": "2043",
+    "name": "ESCAVADEIRA EC140 DLM",
+    "type": "Trator"
+  },
+  {
+    "id": "2044",
+    "name": "QUADRICICULO TRX420",
+    "type": "Outro"
+  },
+  {
+    "id": "2045",
+    "name": "JEEP COMPASS SPORT",
+    "type": "Outro"
+  },
+  {
+    "id": "2046",
+    "name": "MOTOS",
+    "type": "Outro"
+  },
+  {
+    "id": "2047",
+    "name": "JD TRATOR 6180J",
+    "type": "Trator"
+  },
+  {
+    "id": "2048",
+    "name": "QUADRICICULO TRX420",
+    "type": "Outro"
+  },
+  {
+    "id": "2049",
+    "name": "JONH DEERE 7M230",
+    "type": "Trator"
+  },
+  {
+    "id": "2050",
+    "name": "VW 26.280 CRM 6X4",
+    "type": "Caminhão"
+  },
+  {
+    "id": "2051",
+    "name": "JD TRATOR 6180J",
+    "type": "Trator"
+  },
+  {
+    "id": "3018",
+    "name": "FIAT STRADA FREEDOM",
+    "type": "Outro"
+  },
+  {
+    "id": "3019",
+    "name": "HILLUX 2012 A 2015 AUTOMATICA",
+    "type": "Outro"
+  },
+  {
+    "id": "3021",
+    "name": "RAM 3500",
+    "type": "Outro"
+  },
+  {
+    "id": "3022",
+    "name": "I/RAM 1500 LARAIME NE",
+    "type": "Outro"
+  },
+  {
+    "id": "4001",
+    "name": "SCANIA G 560",
+    "type": "Caminhão"
+  },
+  {
+    "id": "4002",
+    "name": "SCANIA G 560",
+    "type": "Caminhão"
+  },
+  {
+    "id": "4003",
+    "name": "SCANIA G 560",
+    "type": "Caminhão"
+  },
+  {
+    "id": "7300",
+    "name": "GERADOR DE ENERGIA",
+    "type": "Outro"
+  },
+  {
+    "id": "7301",
+    "name": "GERADOR DE ENERGIA",
+    "type": "Outro"
+  },
+  {
+    "id": "7302",
+    "name": "GERADOR DE ENERGIA",
+    "type": "Outro"
+  },
+  {
+    "id": "7303",
+    "name": "GERADOR DE ENERGIA",
+    "type": "Outro"
+  },
+  {
+    "id": "7304",
+    "name": "GERADOR DE ENERGIA",
+    "type": "Outro"
+  },
+  {
+    "id": "7305",
+    "name": "GERADOR DE ENERGIA",
+    "type": "Outro"
+  },
+  {
+    "id": "7306",
+    "name": "GERADOR DE ENERGIA",
+    "type": "Outro"
+  },
+  {
+    "id": "7307",
+    "name": "COMPRESSOR AR COMPRIMIDO",
+    "type": "Trator"
+  },
+  {
+    "id": "7308",
+    "name": "COMPRESSOR AR COMPRIMIDO",
+    "type": "Trator"
+  },
+  {
+    "id": "7309",
+    "name": "COMPRESSOR AR COMPRIMIDO",
+    "type": "Trator"
+  },
+  {
+    "id": "7310",
+    "name": "GERADOR DE ENERGIA",
+    "type": "Outro"
+  },
+  {
+    "id": "7311",
+    "name": "GERADOR DE ENERGIA",
+    "type": "Outro"
+  },
+  {
+    "id": "7312",
+    "name": "GERADOR DE ENERGIA",
+    "type": "Outro"
+  },
+  {
+    "id": "7313",
+    "name": "COMPRESSOR AR COMPRIMIDO",
+    "type": "Trator"
+  },
+  {
+    "id": "7314",
+    "name": "GERADOR DE ENERGIA",
+    "type": "Outro"
+  },
+  {
+    "id": "7315",
+    "name": "GERADOR DE ENERGIA",
+    "type": "Outro"
+  },
+  {
+    "id": "7350",
+    "name": "MOTO BOMBA",
+    "type": "Outro"
+  },
+  {
+    "id": "7351",
+    "name": "MOTO BOMBA",
+    "type": "Outro"
+  },
+  {
+    "id": "7354",
+    "name": "MOTO BOMBA",
+    "type": "Outro"
+  }
+]
