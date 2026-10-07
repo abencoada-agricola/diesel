@@ -28,7 +28,7 @@ Antes de ir para o campo, cada trabalhador deve abrir com internet, entrar e agu
 ## Desenvolvimento
 Node >=22.13.0. `npm run dev` inicia http://127.0.0.1:5173; entrada local simulada `/signin-with-chatgpt?return_to=/campo.html`. Identidade de teste `Seedy`. Esse simulador não vai para produção.
 
-`npm run db:generate` gera migrações do schema. Aplicar localmente com Wrangler, segundo README do starter. `npx tsc --noEmit`, `node --check public/ui-v3.js` e `node tests/api.mjs` verificam tipos, sintaxe e regras essenciais. O teste API precisa do servidor local com migração aplicada e base de teste sem leituras prévias de QA-01; cria apenas dados locais. Não executar contra produção.
+`npm run db:generate` gera migrações do schema. Aplicar localmente com Wrangler, segundo README do starter. `npx tsc --noEmit`, `node --check public/ui-v4.js` e `node tests/api.mjs` verificam tipos, sintaxe e regras essenciais. O teste API precisa do servidor local com migração aplicada e base de teste sem leituras prévias de QA-01; cria apenas dados locais. Não executar contra produção.
 
 O deploy Sites aplica as migrações e provisiona D1. A origem da publicação está registrada em `.openai/hosting.json`.
 
