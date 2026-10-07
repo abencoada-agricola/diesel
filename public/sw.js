@@ -1,7 +1,0 @@
-const CACHE='abencoada-shell-v5';
-const FILES=['/campo','/ui-v4.js','/ui-v4.css','/logo.png','/icon.svg','/icon-192.png','/icon-512.png','/manifest.webmanifest'];
-self.addEventListener('install',event=>event.waitUntil((async()=>{const cache=await caches.open(CACHE);for(const file of FILES){const r=await fetch(file,{cache:'reload',credentials:'include'});if(!r.ok||new URL(r.url).origin!==self.location.origin)throw new Error('Shell indisponível: '+file);if(file==='/campo'&&!(await r.clone().text()).includes('id="app"'))throw new Error('Formulário indisponível');await cache.put(file,r)}await self.skipWaiting()})()));
-self.addEventListener('activate',event=>event.waitUntil((async()=>{for(const key of await caches.keys())if(key.startsWith('abencoada-shell-')&&key!==CACHE)await caches.delete(key);await self.clients.claim()})()));
-self.addEventListener('fetch',event=>{const url=new URL(event.request.url);if(url.origin!==self.location.origin||event.request.method!=='GET'||url.pathname.startsWith('/api/')||url.pathname.includes('signin')||url.pathname.includes('signout'))return;
- if(FILES.includes(url.pathname)||event.request.mode==='navigate'&&['/','/campo','/campo/'].includes(url.pathname)){event.respondWith((async()=>{const c=await caches.open(CACHE);return await c.match(['/','/campo','/campo/'].includes(url.pathname)?'/campo':url.pathname)||fetch(event.request)})())}});
-self.addEventListener('sync',event=>{if(event.tag==='diesel-sync')event.waitUntil(self.clients.matchAll({type:'window'}).then(cs=>cs.forEach(c=>c.postMessage({type:'sync'}))))});

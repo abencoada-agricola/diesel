@@ -1,0 +1,36 @@
+import {PGlite} from '@electric-sql/pglite';
+import {readFile} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const db=new PGlite();
+await db.exec(`create role anon;create role authenticated;create schema auth;create table auth.users(id uuid primary key);create function auth.uid() returns uuid language sql as $$select nullif(current_setting('test.uid',true),'')::uuid$$;create function auth.jwt() returns jsonb language sql as $$select jsonb_build_object('email',current_setting('test.email',true))$$;grant usage on schema auth to authenticated;grant execute on all functions in schema auth to authenticated;`);
+await db.exec(await readFile('supabase/schema.sql','utf8'));
+await db.exec(await readFile('supabase/fleets.sql','utf8'));
+assert.equal((await db.query('select count(*)::int n from fleets')).rows[0].n,246);
+const ids=['00000000-0000-4000-8000-000000000001','00000000-0000-4000-8000-000000000002','00000000-0000-4000-8000-000000000003'];
+await db.query(`insert into auth.users values($1),($2),($3)`,ids);
+await db.exec(`insert into members values('gestor@example.com','Gestor','admin'),('operador@example.com','João','operator');insert into fleets values('QA','Teste','Trator',true);`);
+async function who(i,email){await db.exec('reset role');await db.query("select set_config('test.uid',$1,false),set_config('test.email',$2,false)",[ids[i],email]);await db.exec('set role authenticated')}
+async function rpc(name,payload){return (await db.query(`select public.${name}($1::jsonb) result`,[JSON.stringify(payload)])).rows[0].result}
+await who(1,'operador@example.com');
+const base={id:crypto.randomUUID(),fleet:'QA',date:'2026-10-07',engine:100,elevator:200,km:300,start:0,end:50,liters:50,operator:'FALSO',signature:'FALSA',notes:'',createdAt:new Date().toISOString()};
+assert.equal((await rpc('diesel_submit',base)).id,base.id);
+assert.equal((await rpc('diesel_submit',base)).duplicate,true);
+for(const key of ['engine','elevator','km'])assert.equal((await rpc('diesel_submit',{...base,id:crypto.randomUUID(),[key]:base[key]-1})).status,422);
+for(const key of ['engine','elevator','km','start','end','liters']){const r={...base,id:crypto.randomUUID()};delete r[key];assert.equal((await rpc('diesel_submit',r)).status,422)}
+assert.equal((await rpc('diesel_submit',{...base,id:crypto.randomUUID(),liters:0})).status,422);
+assert.equal((await rpc('diesel_submit',{...base,id:crypto.randomUUID(),end:0})).status,422);
+assert.ok((await rpc('diesel_submit',{...base,id:crypto.randomUUID()})).id);
+assert.equal((await rpc('diesel_admin_save',{action:'member',email:'novo@example.com',name:'Novo',role:'admin'})).status,403);
+await assert.rejects(()=>db.query("insert into fleets(id,name,type) values('ILEGAL','Teste','Outro')"),/permission denied/);
+await who(0,'gestor@example.com');
+assert.ok((await rpc('diesel_submit',{...base,id:crypto.randomUUID(),engine:101})).id);
+let data=(await db.query('select public.diesel_records() result')).rows[0].result;
+assert.equal(data.records.length,3);assert.equal(data.records.find(r=>r.id===base.id).signature,'João');assert.equal(data.records.find(r=>r.id===base.id).operator,'João');
+assert.equal((await rpc('diesel_submit',{...base,id:crypto.randomUUID()})).status,422);
+await who(1,'operador@example.com');
+data=(await db.query('select public.diesel_records() result')).rows[0].result;assert.equal(data.records.length,2);
+await who(2,'naoautorizado@example.com');
+assert.equal((await rpc('diesel_submit',{...base,id:crypto.randomUUID()})).status,403);
+assert.equal((await db.query('select public.diesel_session() result')).rows[0].result.status,403);
+await db.exec('reset role;set role anon');await assert.rejects(()=>db.query('select public.diesel_session()'),/permission denied/);
+await db.close();console.log('Regras, permissões, catálogo e assinatura: testes aprovados.');
