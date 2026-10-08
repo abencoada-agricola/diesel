@@ -1,46 +1,92 @@
-# Abençoada — Diesel
+# Abençoada Diesel
 
-Sistema web instalável para Android, publicado pelo GitHub Pages. Tela de campo sem login, com nome do trabalhador. Administração com nome de usuário e senha; autenticação e banco PostgreSQL no Supabase. A interface funciona no Pages; registros são recebidos pelo banco conectado.
+A mobile-friendly diesel refueling log for agricultural fleets. The field form works without a login and stores entries on the device when there is no internet. Managers use a separate, protected dashboard.
 
-## Endereços
+The website runs on GitHub Pages. Supabase stores the records and handles administrator authentication. The interface is in Portuguese.
 
-- Campo: https://abencoada-agricola.github.io/diesel/
-- Administração: https://abencoada-agricola.github.io/diesel/admin.html
+- [Field form](https://abencoada-agricola.github.io/diesel/)
+- [Administration](https://abencoada-agricola.github.io/diesel/admin.html)
 
-## Conectar o banco
+## Field use
 
-1. Crie um projeto Supabase no plano escolhido.
-2. Execute `supabase/schema.sql` uma vez no SQL Editor, depois `supabase/fleets.sql`. Após cadastrar o gestor, execute `supabase/usernames.sql` uma vez e publique a função `supabase/functions/diesel-login/index.ts` com o nome `diesel-login`, conforme `supabase/config.toml`. O catálogo tem 246 frotas ativas exportadas do Gmais em 07/10/2026, contendo somente código, modelo e tipo.
-3. Em Authentication, desative o cadastro público e crie a conta do gestor com e-mail e senha. Não informe senhas no código.
-4. No SQL Editor, cadastre esse mesmo e-mail: `insert into public.members(email,name,role) values('seu-email-em-minusculas','Seu nome','admin');`. O primeiro visitante não recebe automaticamente o perfil de gestor.
-5. Execute `supabase/field-access.sql` uma vez para liberar o formulário de campo sem login. Só o catálogo, as últimas leituras e o envio validado são públicos; o histórico e a administração permanecem protegidos. No repositório, Settings → Secrets and variables → Actions → Variables: defina `SUPABASE_URL` e `SUPABASE_PUBLISHABLE_KEY`. Use a chave pública publishable ou anon. Nunca use service_role ou secret na interface.
-6. Execute o workflow **Publicar sistema**. Sem essas variáveis, a interface informa que o sistema está em configuração e bloqueia o uso.
-7. Os trabalhadores informam o nome no campo e dispensam conta. Para novos gestores, crie contas em Authentication. Cadastre os mesmos e-mails, nomes e um usuário único na administração do sistema. Operadores só consultam seus registros; gestores consultam a operação.
+Open the form, enter the worker's name and fleet code, fill in the readings, and tap **Enviar abastecimento**. Fleet codes can be typed or selected from the suggestions.
 
-A conta e a senha são administradas no Supabase. A tela do sistema permite autorizar usuários existentes e escolher o perfil, sem expor chaves administrativas no navegador.
+Each entry requires:
 
-## Uso no campo
+- Worker name
+- Fleet code
+- Engine hour meter
+- Elevator hour meter
+- Mileage (KM)
+- Initial and final dispenser readings
+- Liters supplied
 
-Abra a tela de campo com internet, aguarde o carregamento inicial e confira a abertura em modo avião antes de sair para o campo. O primeiro carregamento precisa de internet; depois o formulário abre sem login e sem rede. Instale pelo menu do Chrome no Android. Rascunhos e registros pendentes são guardados no IndexedDB neste aparelho. O nome é obrigatório em cada abastecimento e fica preservado na fila. Registros de contas anteriores permanecem guardados e dependem da sessão original para sincronização. Ao voltar a conexão, abra o aplicativo para sincronizar. A fila só é removida depois da confirmação do banco; uma identificação única impede registros duplicados.
+The date and time are recorded automatically when the entry is saved. The worker's name becomes the signature. This is a declared name, not a verified identity. Earlier records submitted through an account keep their original account signature.
 
-Data e hora são registradas automaticamente ao enviar. Frota, horímetros do motor/elevador, KM, início/final e litros são obrigatórios. Litros devem ser positivos e final deve superar início. Valores de KM e horímetros não podem ser menores que nenhuma leitura já recebida da mesma frota. A conferência é feita no celular e no banco. Uma trava na frota serializa os envios simultâneos. Leituras iguais são aceitas. Registros divergentes ficam para correção.
+All readings are required. Liters must be greater than zero, and the final dispenser reading must exceed the initial reading. Mileage and both hour meters cannot fall below the highest readings already recorded for that fleet. Equal readings are allowed. Managers can also require liters to match the difference between the dispenser readings, with a tolerance of 0.02 L.
 
-Nos novos registros de campo, a assinatura é o nome informado pelo trabalhador, normalizado pelo banco, sem confirmação de identidade. A origem é marcada como `declared`. Registros antigos de conta mantêm sua assinatura autenticada. O cliente não pode escolher um usuário autenticado ou perfil para um envio público. Registros confirmados são preservados sem edição ou exclusão. As funções verificam autorização e perfil; tabelas têm RLS e não concedem acesso direto aos clientes.
+## Offline use
 
-O painel consulta novos registros a cada 15 segundos quando aberto, apresenta avisos e permite exportar CSV ou imprimir por frota. Notificações com o painel fechado não estão implementadas. Não limpe os dados do navegador com registros pendentes. Trocar de aparelho não transfere a fila local.
+Open the app with internet at least once so it can download the form and fleet catalog. Before going to the field, test reopening it in airplane mode. On Android, use Chrome's **Install app** or **Add to Home screen** option.
 
-## Desenvolvimento
+Drafts and pending entries are stored in the browser's IndexedDB on that device. No login is needed to reopen the field form. With the app open, synchronization runs when the connection returns, every 15 seconds, or when **Tentar enviar** is tapped.
 
-Node 22+. `npm ci`, `npm test`, `npm run build`. `npm run dev` abre a interface local. O build gera `dist/` e inclui o SDK de autenticação nos arquivos offline, sem dependência de CDN em campo. O workflow publica somente `dist/`, respeitando o prefixo `/diesel/`.
+An entry stays on the device until the database confirms receipt. Each submission has a unique ID and confirmation key to prevent duplicate records after a retry. Date, time, and worker name are preserved during synchronization.
 
-Os testes executam o schema PostgreSQL em PGlite e verificam o catálogo, campos obrigatórios, leituras inferiores, valores iguais, assinatura, idempotência e permissões de operador, gestor e visitante. Testes não acessam o banco de produção.
+The app checks readings against its saved catalog and local queue. The database checks them again against the latest received readings. If another device has submitted a higher reading, the conflicting entry remains on the original device for correction and resubmission.
 
-Chaves públicas de configuração podem ser incluídas no build; a segurança dos dados depende das permissões e funções do banco. Senhas, chaves administrativas e tokens pessoais não devem integrar o repositório.
+Do not clear browser storage while entries are pending. Pending entries do not transfer to another phone. Automatic synchronization requires the app to be open; it is not guaranteed after the app is closed. Pending entries from the earlier account-based form still require the original account session to synchronize.
 
-## Login por usuário
+## Administration
 
-O usuário tem 3 a 30 letras sem acentos, números, pontos, traços ou sublinhados; maiúsculas e minúsculas são equivalentes. A migração sugere o prefixo do e-mail para contas existentes. O gestor pode alterar em Configurações → Equipe e acessos → Editar usuário. A senha e a identidade da conta permanecem as mesmas. O e-mail ainda é aceito durante a transição.
+Administrators sign in with a username and password. They can view and filter records by fleet, worker, date, and synchronization status, inspect readings, export CSV files, and print reports. Received records cannot be edited or deleted through the app.
 
-A função de entrada resolve o nome no servidor, valida a senha pelo Supabase Auth e retorna somente os tokens da sessão. A chave administrativa usa o ambiente automático da Edge Function e nunca vai ao Pages. O tradutor de nomes só pode ser chamado por service_role; visitantes e operadores não podem consultar e-mails. As tentativas são limitadas por usuário e IP em janelas de cinco minutos. Deploy pelo editor Supabase ou `supabase functions deploy diesel-login`; mantenha verify_jwt=true e defina a variável pública SUPABASE_LOGIN_KEY com a chave anon JWT para essa função de entrada. Ela exige senha válida e nunca recebe service_role do navegador. Não registre corpo de requisições ou senhas em logs.
+The dashboard checks for new records every 15 seconds while open and shows unread notices in the bell. Optional browser notifications also require the dashboard to remain open.
 
-A migração de campo permite somente a inclusão validada, sem editar ou excluir registros. Cada envio usa UUID e uma chave aleatória de confirmação para repetição segura. As leituras são conferidas com o cache e a fila local, depois novamente no banco com trava por frota. Uma divergência descoberta na sincronização fica pendente para correção no celular. Os avisos de recebimento seguem no painel do gestor quando aberto.
+**Frotas** manages the fleet catalog. **Configurações** manages access permissions, usernames, and validation rules. Account passwords are managed in Supabase. Usernames contain 3–30 letters without accents, numbers, dots, hyphens, or underscores; capitalization does not matter. Email login remains available for existing accounts during the transition.
+
+Public access is limited to the fleet catalog, latest readings, validation rules, and validated submissions. Stored record history and worker names can only be retrieved by authorized accounts. Administration requires a manager account. Database tables have Row Level Security and cannot be accessed directly by public clients.
+
+## Setup and deployment
+
+For a new Supabase project:
+
+1. Run `supabase/schema.sql`, then `supabase/fleets.sql` in the SQL Editor. The bundled catalog contains 246 fleets exported on October 7, 2026.
+2. Disable public account signup in Supabase Authentication and create the manager's account there.
+3. Register that account in the database, using its lowercase email:
+
+   ```sql
+   insert into public.members (email, name, role)
+   values ('manager@example.com', 'Manager Name', 'admin');
+   ```
+
+4. Run `supabase/usernames.sql`, then `supabase/field-access.sql`, once and in that order. The username migration assigns existing accounts an initial username based on their email prefix. It can be changed in the dashboard.
+5. Deploy `supabase/functions/diesel-login/index.ts` as **diesel-login**, using `supabase/config.toml`. Keep `verify_jwt = true`. The function resolves usernames on the server and checks passwords with Supabase Auth. Login attempts are limited by username and IP address.
+6. Add these repository variables under **Settings → Secrets and variables → Actions → Variables**:
+
+   | Variable | Value |
+   | --- | --- |
+   | `SUPABASE_URL` | Project URL |
+   | `SUPABASE_PUBLISHABLE_KEY` | Public publishable key |
+   | `SUPABASE_LOGIN_KEY` | Public legacy `anon` JWT key for the login function |
+
+7. Enable GitHub Pages with **GitHub Actions** as the source, then run **Publicar sistema** or push to `main`.
+
+Existing installations should apply only migrations they have not already run. Do not rerun the initial schema on an existing database.
+
+The workflow runs tests, builds the site, and deploys `dist/`. Administrative keys stay in the Supabase function environment. Never place passwords, secret keys, or `service_role` keys in the website or repository.
+
+## Development
+
+Use Node.js 22 or later.
+
+```sh
+npm ci
+npm run dev
+npm test
+npm run build
+```
+
+`npm run dev` serves the local interface. Backend access requires Supabase configuration. The build reads the deployment variables above and writes the configured site to `dist/`.
+
+The service worker caches the interface, fleet catalog, and authentication SDK. Versioned asset names keep deployed updates consistent. Tests use a local PostgreSQL-compatible database to check permissions, required fields, meter rules, declared signatures, and duplicate submissions. Login tests check session handling and failure responses. They do not write to the production database.
