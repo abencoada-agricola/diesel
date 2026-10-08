@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite web --host 127.0.0.1",
     "build": "node scripts/build.mjs",
-    "test": "node tests/database.mjs"
+    "test": "node tests/database.mjs && node tests/login.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.0.0"

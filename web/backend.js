@@ -3,11 +3,25 @@ import {config} from './config.js';
 export const isConfigured=()=>/^https:\/\//.test(config.url)&&!!config.publishableKey;
 const client=isConfigured()?createClient(config.url,config.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,storageKey:'diesel-auth'}}):null;
 export async function getAuthUserId(){return (await client.auth.getSession()).data.session?.user.id||null}
-export async function signIn(email,password){const {error}=await client.auth.signInWithPassword({email,password});if(error)throw Error('E-mail ou senha inválidos. Confira seus dados ou consulte o gestor.')}
+export async function signIn(username,password){
+ if(!client)throw Error('O banco ainda não foi conectado.');
+ const login=String(username).trim().toLowerCase();
+ // Compatibilidade com contas antigas durante a transição; a tela pede usuário.
+ if(login.includes('@')){const {error}=await client.auth.signInWithPassword({email:login,password});if(error)throw Error('Usuário ou senha inválidos. Confira seus dados ou consulte o gestor.');return}
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),18000);
+ try{
+  const response=await fetch(config.url+'/functions/v1/diesel-login',{method:'POST',headers:{'Content-Type':'application/json',apikey:config.publishableKey,Authorization:'Bearer '+(config.loginKey||config.publishableKey)},body:JSON.stringify({username:login,password}),signal:controller.signal});
+  const data=await response.json();
+  if(!response.ok)throw Error(response.status===429?'Muitas tentativas. Aguarde cinco minutos e tente novamente.':response.status>=500?'Não foi possível conectar. Tente novamente.':'Usuário ou senha inválidos. Confira seus dados ou consulte o gestor.');
+  if(!data.access_token||!data.refresh_token)throw Error('Não foi possível entrar. Tente novamente.');
+  const {error}=await client.auth.setSession({access_token:data.access_token,refresh_token:data.refresh_token});
+  if(error)throw Error('Não foi possível entrar. Tente novamente.');
+ }finally{clearTimeout(timer)}
+}
 export async function signOut(){await client.auth.signOut({scope:'local'})}
 export async function api(path,options={}){
  if(!client)throw Error('O banco ainda não foi conectado.');
- const {data:auth}=await client.auth.getSession();if(!auth.session){const e=Error('Entre com seu e-mail e senha.');e.status=401;throw e}
+ const {data:auth}=await client.auth.getSession();if(!auth.session){const e=Error('Entre com seu usuário e senha.');e.status=401;throw e}
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),18000);
  try{
   const [route,query]=path.split('?');let rpc,args={};

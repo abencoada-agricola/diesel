@@ -1,6 +1,6 @@
 # Abençoada — Diesel
 
-Sistema web instalável para Android, publicado pelo GitHub Pages. Login próprio com e-mail e senha, autenticação e banco PostgreSQL no Supabase. A interface funciona no Pages; registros são recebidos pelo banco conectado.
+Sistema web instalável para Android, publicado pelo GitHub Pages. Login próprio com nome de usuário e senha, autenticação e banco PostgreSQL no Supabase. A interface funciona no Pages; registros são recebidos pelo banco conectado.
 
 ## Endereços
 
@@ -10,12 +10,12 @@ Sistema web instalável para Android, publicado pelo GitHub Pages. Login própri
 ## Conectar o banco
 
 1. Crie um projeto Supabase no plano escolhido.
-2. Execute `supabase/schema.sql` uma vez no SQL Editor, depois `supabase/fleets.sql`. O catálogo tem 246 frotas ativas exportadas do Gmais em 07/10/2026, contendo somente código, modelo e tipo.
+2. Execute `supabase/schema.sql` uma vez no SQL Editor, depois `supabase/fleets.sql`. Após cadastrar o gestor, execute `supabase/usernames.sql` uma vez e publique a função `supabase/functions/diesel-login/index.ts` com o nome `diesel-login`, conforme `supabase/config.toml`. O catálogo tem 246 frotas ativas exportadas do Gmais em 07/10/2026, contendo somente código, modelo e tipo.
 3. Em Authentication, desative o cadastro público e crie a conta do gestor com e-mail e senha. Não informe senhas no código.
 4. No SQL Editor, cadastre esse mesmo e-mail: `insert into public.members(email,name,role) values('seu-email-em-minusculas','Seu nome','admin');`. O primeiro visitante não recebe automaticamente o perfil de gestor.
 5. No repositório, Settings → Secrets and variables → Actions → Variables: defina `SUPABASE_URL` e `SUPABASE_PUBLISHABLE_KEY`. Use a chave pública publishable ou anon. Nunca use service_role ou secret na interface.
 6. Execute o workflow **Publicar sistema**. Sem essas variáveis, a interface informa que o sistema está em configuração e bloqueia o uso.
-7. Crie as contas dos trabalhadores em Authentication. Cadastre os mesmos e-mails e nomes na administração do sistema. Operadores só consultam seus registros; gestores consultam a operação.
+7. Crie as contas dos trabalhadores em Authentication. Cadastre os mesmos e-mails, nomes e um usuário único na administração do sistema. Operadores só consultam seus registros; gestores consultam a operação.
 
 A conta e a senha são administradas no Supabase. A tela do sistema permite autorizar usuários existentes e escolher o perfil, sem expor chaves administrativas no navegador.
 
@@ -36,3 +36,9 @@ Node 22+. `npm ci`, `npm test`, `npm run build`. `npm run dev` abre a interface 
 Os testes executam o schema PostgreSQL em PGlite e verificam o catálogo, campos obrigatórios, leituras inferiores, valores iguais, assinatura, idempotência e permissões de operador, gestor e visitante. Testes não acessam o banco de produção.
 
 Chaves públicas de configuração podem ser incluídas no build; a segurança dos dados depende das permissões e funções do banco. Senhas, chaves administrativas e tokens pessoais não devem integrar o repositório.
+
+## Login por usuário
+
+O usuário tem 3 a 30 letras sem acentos, números, pontos, traços ou sublinhados; maiúsculas e minúsculas são equivalentes. A migração sugere o prefixo do e-mail para contas existentes. O gestor pode alterar em Configurações → Equipe e acessos → Editar usuário. A senha e a identidade da conta permanecem as mesmas. O e-mail ainda é aceito durante a transição.
+
+A função de entrada resolve o nome no servidor, valida a senha pelo Supabase Auth e retorna somente os tokens da sessão. A chave administrativa usa o ambiente automático da Edge Function e nunca vai ao Pages. O tradutor de nomes só pode ser chamado por service_role; visitantes e operadores não podem consultar e-mails. As tentativas são limitadas por usuário e IP em janelas de cinco minutos. Deploy pelo editor Supabase ou `supabase functions deploy diesel-login`; mantenha verify_jwt=true e defina a variável pública SUPABASE_LOGIN_KEY com a chave anon JWT para essa função de entrada. Ela exige senha válida e nunca recebe service_role do navegador. Não registre corpo de requisições ou senhas em logs.

@@ -1,0 +1,3 @@
+[functions.diesel-login]
+# A chave anônima pública passa pela validação do gateway; o Auth valida a senha.
+verify_jwt = true

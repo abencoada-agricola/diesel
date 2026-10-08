@@ -2,13 +2,15 @@ import {PGlite} from '@electric-sql/pglite';
 import {readFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
 const db=new PGlite();
-await db.exec(`create role anon;create role authenticated;create schema auth;create table auth.users(id uuid primary key);create function auth.uid() returns uuid language sql as $$select nullif(current_setting('test.uid',true),'')::uuid$$;create function auth.jwt() returns jsonb language sql as $$select jsonb_build_object('email',current_setting('test.email',true))$$;grant usage on schema auth to authenticated;grant execute on all functions in schema auth to authenticated;`);
+await db.exec(`create role service_role;create role anon;create role authenticated;create schema auth;create table auth.users(id uuid primary key);create function auth.uid() returns uuid language sql as $$select nullif(current_setting('test.uid',true),'')::uuid$$;create function auth.jwt() returns jsonb language sql as $$select jsonb_build_object('email',current_setting('test.email',true))$$;grant usage on schema auth to authenticated;grant execute on all functions in schema auth to authenticated;`);
 await db.exec(await readFile('supabase/schema.sql','utf8'));
 await db.exec(await readFile('supabase/fleets.sql','utf8'));
 assert.equal((await db.query('select count(*)::int n from fleets')).rows[0].n,246);
 const ids=['00000000-0000-4000-8000-000000000001','00000000-0000-4000-8000-000000000002','00000000-0000-4000-8000-000000000003'];
 await db.query(`insert into auth.users values($1),($2),($3)`,ids);
 await db.exec(`insert into members values('gestor@example.com','Gestor','admin'),('operador@example.com','João','operator');insert into fleets values('QA','Teste','Trator',true);`);
+await db.exec(await readFile('supabase/usernames.sql','utf8'));
+assert.equal((await db.query("select username from members where email='gestor@example.com'")).rows[0].username,'gestor');
 async function who(i,email){await db.exec('reset role');await db.query("select set_config('test.uid',$1,false),set_config('test.email',$2,false)",[ids[i],email]);await db.exec('set role authenticated')}
 async function rpc(name,payload){return (await db.query(`select public.${name}($1::jsonb) result`,[JSON.stringify(payload)])).rows[0].result}
 await who(1,'operador@example.com');
@@ -32,5 +34,18 @@ data=(await db.query('select public.diesel_records() result')).rows[0].result;as
 await who(2,'naoautorizado@example.com');
 assert.equal((await rpc('diesel_submit',{...base,id:crypto.randomUUID()})).status,403);
 assert.equal((await db.query('select public.diesel_session() result')).rows[0].result.status,403);
-await db.exec('reset role;set role anon');await assert.rejects(()=>db.query('select public.diesel_session()'),/permission denied/);
+await who(0,'gestor@example.com');
+assert.equal((await rpc('diesel_admin_save',{action:'member-username',email:'gestor@example.com',username:'GESTOR.CAMPO'})).ok,true);
+assert.equal((await rpc('diesel_admin_save',{action:'member-username',email:'operador@example.com',username:'gestor.campo'})).status,422);
+assert.equal((await rpc('diesel_admin_save',{action:'member-username',email:'operador@example.com',username:'ab'})).status,422);
+await who(1,'operador@example.com');
+assert.equal((await rpc('diesel_admin_save',{action:'member-username',email:'operador@example.com',username:'outro'})).status,403);
+await assert.rejects(()=>db.query("select diesel_login_target('operador','test')"),/permission denied/);
+await db.exec('reset role;set role service_role');
+for(let i=0;i<10;i++)assert.equal((await db.query("select diesel_login_target('operador','test') result")).rows[0].result.email,'operador@example.com');
+assert.equal((await db.query("select diesel_login_target('operador','test') result")).rows[0].result.status,429);
+assert.equal((await db.query("select diesel_login_target('desconhecido','test') result")).rows[0].result.email,null);
+await db.exec('reset role;set role anon');
+await assert.rejects(()=>db.query("select diesel_login_target('operador','test')"),/permission denied/);
+await assert.rejects(()=>db.query('select public.diesel_session()'),/permission denied/);
 await db.close();console.log('Regras, permissões, catálogo e assinatura: testes aprovados.');
