@@ -23,7 +23,7 @@ A conta e a senha são administradas no Supabase. A tela do sistema permite auto
 
 Abra com internet, entre com sua conta e aguarde o carregamento inicial e confira a abertura sem internet antes de sair para o campo. Instale pelo menu do Chrome no Android. Rascunhos e registros pendentes são guardados no IndexedDB, por usuário. Ao voltar a conexão, abra o aplicativo para sincronizar. A fila só é removida depois da confirmação do banco; uma identificação única impede registros duplicados.
 
-Data, frota, horímetros do motor/elevador, KM, início/final e litros são obrigatórios. Litros devem ser positivos e final deve superar início. Valores de KM e horímetros não podem ser menores que nenhuma leitura já recebida da mesma frota. A conferência é feita no celular e no banco. Uma trava na frota serializa os envios simultâneos. Leituras iguais são aceitas. Registros divergentes ficam para correção.
+Data e hora são registradas automaticamente ao enviar. Frota, horímetros do motor/elevador, KM, início/final e litros são obrigatórios. Litros devem ser positivos e final deve superar início. Valores de KM e horímetros não podem ser menores que nenhuma leitura já recebida da mesma frota. A conferência é feita no celular e no banco. Uma trava na frota serializa os envios simultâneos. Leituras iguais são aceitas. Registros divergentes ficam para correção.
 
 A assinatura é o nome autorizado da conta autenticada e é definida pelo banco. O navegador não pode alterá-la. Registros confirmados são preservados sem edição ou exclusão. As funções verificam autorização e perfil; tabelas têm RLS e não concedem acesso direto aos clientes.
 
