@@ -10,6 +10,7 @@ const ids=['00000000-0000-4000-8000-000000000001','00000000-0000-4000-8000-00000
 await db.query(`insert into auth.users values($1),($2),($3)`,ids);
 await db.exec(`insert into members values('gestor@example.com','Gestor','admin'),('operador@example.com','João','operator');insert into fleets values('QA','Teste','Trator',true);`);
 await db.exec(await readFile('supabase/usernames.sql','utf8'));
+await db.exec(await readFile('supabase/field-access.sql','utf8'));
 assert.equal((await db.query("select username from members where email='gestor@example.com'")).rows[0].username,'gestor');
 async function who(i,email){await db.exec('reset role');await db.query("select set_config('test.uid',$1,false),set_config('test.email',$2,false)",[ids[i],email]);await db.exec('set role authenticated')}
 async function rpc(name,payload){return (await db.query(`select public.${name}($1::jsonb) result`,[JSON.stringify(payload)])).rows[0].result}
@@ -45,6 +46,25 @@ await db.exec('reset role;set role service_role');
 for(let i=0;i<10;i++)assert.equal((await db.query("select diesel_login_target('operador','test') result")).rows[0].result.email,'operador@example.com');
 assert.equal((await db.query("select diesel_login_target('operador','test') result")).rows[0].result.status,429);
 assert.equal((await db.query("select diesel_login_target('desconhecido','test') result")).rows[0].result.email,null);
+await db.exec('reset role;set role anon');
+const catalog=(await db.query('select diesel_field_session() result')).rows[0].result;
+assert.ok(catalog.fleets.length);assert.deepEqual(Object.keys(catalog).sort(),['fleets','rules']);
+const guest={...base,id:crypto.randomUUID(),engine:101,operator:'  José   do Campo  ',submissionKey:crypto.randomUUID(),userId:ids[0],signature:'GESTOR',role:'admin'};
+assert.equal((await rpc('diesel_field_submit',guest)).id,guest.id);
+assert.equal((await rpc('diesel_field_submit',guest)).duplicate,true);
+assert.equal((await rpc('diesel_field_submit',{...guest,submissionKey:crypto.randomUUID()})).status,409);
+for(const key of ['engine','elevator','km'])assert.equal((await rpc('diesel_field_submit',{...guest,id:crypto.randomUUID(),[key]:0})).status,422);
+for(const operator of ['', '1', '123', null])assert.equal((await rpc('diesel_field_submit',{...guest,id:crypto.randomUUID(),operator})).status,422);
+assert.equal((await rpc('diesel_field_submit',{...guest,id:crypto.randomUUID(),submissionKey:null})).status,422);
+for(const key of ['engine','elevator','km','start','end','liters']){const r={...guest,id:crypto.randomUUID()};delete r[key];assert.equal((await rpc('diesel_field_submit',r)).status,422)}
+await assert.rejects(()=>db.query('select * from records'),/permission denied/);
+await assert.rejects(()=>db.query('select diesel_admin()'),/permission denied/);
+await assert.rejects(()=>db.query("select private.submit_record('{}','Falso',null,'declared',null)"),/permission denied/);
+await who(1,'operador@example.com');
+assert.equal((await db.query('select diesel_records() result')).rows[0].result.records.length,2);
+await who(0,'gestor@example.com');
+const saved=(await db.query('select diesel_records($1) result',[guest.id])).rows[0].result;
+assert.equal(saved.operator,'José do Campo');assert.equal(saved.signature,'José do Campo');assert.equal(saved.signature_source,'declared');assert.equal(saved.user_id,null);
 await db.exec('reset role;set role anon');
 await assert.rejects(()=>db.query("select diesel_login_target('operador','test')"),/permission denied/);
 await assert.rejects(()=>db.query('select public.diesel_session()'),/permission denied/);

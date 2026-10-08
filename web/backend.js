@@ -36,3 +36,15 @@ export async function api(path,options={}){
   if(data?.error){const e=Error(data.error);e.status=data.status||422;e.data=data;throw e}return data;
  }finally{clearTimeout(timer)}
 }
+
+// Campo público: somente catálogo, últimas leituras e inclusão validada no servidor.
+export async function fieldApi(route,payload){
+ if(!client)throw Error('O banco ainda não foi conectado.');
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
+ try{
+  const response=await fetch(config.url+'/rest/v1/rpc/'+(route==='session'?'diesel_field_session':'diesel_field_submit'),{method:'POST',headers:{apikey:config.publishableKey,'Content-Type':'application/json'},body:JSON.stringify(route==='session'?{}:{payload}),signal:controller.signal});
+  const data=await response.json();
+  if(!response.ok){const e=Error('Não foi possível conectar. O registro continua neste aparelho.');e.status=response.status;throw e}
+  if(data?.error){const e=Error(data.error);e.status=data.status||422;e.data=data;throw e}return data;
+ }finally{clearTimeout(timer)}
+}
