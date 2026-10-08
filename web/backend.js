@@ -18,7 +18,7 @@ export async function api(path,options={}){
   else if(route==='admin')rpc='diesel_admin';
   else throw Error('Operação inválida.');
   const {data,error}=await client.rpc(rpc,args).abortSignal(controller.signal);
-  if(error){const e=Error(error.message||'Não foi possível conectar ao banco.');if(error.code==='42501')e.status=403;throw e}
+  if(error){const e=Error(error.message||'Não foi possível conectar ao banco.');if(error.code==='42501')e.status=403;if(['PGRST301','PGRST302','PGRST303'].includes(error.code))e.status=401;throw e}
   if(data?.error){const e=Error(data.error);e.status=data.status||422;e.data=data;throw e}return data;
  }finally{clearTimeout(timer)}
 }
