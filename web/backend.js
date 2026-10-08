@@ -21,11 +21,12 @@ export async function signIn(username,password){
 export async function signOut(){await client.auth.signOut({scope:'local'})}
 export async function api(path,options={}){
  if(!client)throw Error('O banco ainda não foi conectado.');
- const {data:auth}=await client.auth.getSession();if(!auth.session){const e=Error('Entre com seu usuário e senha.');e.status=401;throw e}
+ const {data:auth,error:authError}=await client.auth.getSession();if(authError)throw Error('Não foi possível confirmar a conexão. Os registros continuam neste aparelho.');if(!auth.session){const e=Error('Entre com seu usuário e senha.');e.status=401;throw e}
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),18000);
  try{
   const [route,query]=path.split('?');let rpc,args={};
   if(route==='session')rpc='diesel_session';
+  else if(route==='mobile-submit'){rpc='diesel_mobile_submit';args={payload:JSON.parse(options.body)}}
   else if(route==='records'&&options.method==='POST'){rpc='diesel_submit';args={payload:JSON.parse(options.body)}}
   else if(route==='records'){rpc='diesel_records';args={record_id:new URLSearchParams(query).get('id')}}
   else if(route==='admin'&&options.method==='POST'){rpc='diesel_admin_save';args={payload:JSON.parse(options.body)};if(args.payload.action==='import-fleets'){const r=await fetch('./fleets.json');if(!r.ok)throw Error('Catálogo indisponível.');args.payload.fleets=await r.json()}}

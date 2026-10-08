@@ -3,3 +3,11 @@ dist/
 .env*
 .DS_Store
 *.tsbuildinfo
+mobile-dist/
+web/qr.js
+android/.gradle/
+android/local.properties
+android/**/build/
+*.keystore
+*.p12
+*.jks

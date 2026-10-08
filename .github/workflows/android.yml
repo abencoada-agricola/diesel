@@ -1,0 +1,72 @@
+name: Build Android APK
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'mobile/**'
+      - 'android/**'
+      - 'capacitor.config.json'
+      - 'scripts/build-mobile.mjs'
+      - 'web/backend.js'
+      - 'web/logo.png'
+      - 'web/fleets.json'
+      - 'package*.json'
+      - '.github/workflows/android.yml'
+permissions:
+  contents: write
+concurrency:
+  group: android-release
+  cancel-in-progress: false
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - run: npm ci
+      - run: npm test
+      - run: npm run build:mobile
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
+          SUPABASE_LOGIN_KEY: ${{ vars.SUPABASE_LOGIN_KEY }}
+      - run: npx cap sync android
+      - name: Prepare signing key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          test -n "$KEYSTORE_BASE64"
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/diesel.p12"
+          chmod 600 "$RUNNER_TEMP/diesel.p12"
+      - name: Build signed APK
+        working-directory: android
+        env:
+          ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/diesel.p12
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: ./gradlew assembleRelease -PappVersionCode=${{ github.run_number }} -PappVersionName=1.0.${{ github.run_number }}
+      - name: Verify signature
+        run: |
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose android/app/build/outputs/apk/release/app-release.apk
+      - name: Prepare download
+        run: |
+          cp android/app/build/outputs/apk/release/app-release.apk abencoada-diesel.apk
+          sha256sum abencoada-diesel.apk > abencoada-diesel.apk.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: abencoada-diesel-apk
+          path: |
+            abencoada-diesel.apk
+            abencoada-diesel.apk.sha256
+      - name: Publish APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "android-1.0.${{ github.run_number }}" abencoada-diesel.apk abencoada-diesel.apk.sha256 --target "$GITHUB_SHA" --title "Android 1.0.${{ github.run_number }}" --notes "Installable Android app with account login, fleet QR scanning, previous readings and offline refueling records. Requires Android 8 or later."

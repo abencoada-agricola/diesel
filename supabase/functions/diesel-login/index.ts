@@ -2,7 +2,7 @@
 const url = Deno.env.get('SUPABASE_URL')!;
 const secret = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const publicKey = Deno.env.get('SUPABASE_ANON_KEY')!;
-const allowedOrigins = new Set(['https://abencoada-agricola.github.io']);
+const allowedOrigins = new Set(['https://abencoada-agricola.github.io','https://localhost']);
 Deno.serve(async (req: Request) => {
   const origin = req.headers.get('origin') || '';
   const headers = {'Content-Type':'application/json', 'Cache-Control':'no-store', 'Vary':'Origin',

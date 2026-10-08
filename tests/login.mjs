@@ -13,6 +13,7 @@ const request=(body,origin='https://abencoada-agricola.github.io')=>new Request(
 let result=await handler(request({username:' OPERADOR ',password:'test-password'}));assert.equal(result.status,200);assert.deepEqual(await result.json(),{access_token:'session-token',refresh_token:'refresh-token'});
 assert.equal(calls[0].body.login_name,'operador');assert.equal(calls[0].body.request_ip,'192.0.2.10');assert.equal(calls[0].opts.headers.apikey,'server-secret');assert.equal(calls[1].opts.headers.apikey,'public-key');assert.equal(calls[1].body.email,'person@example.com');
 for(const failure of ['missing','wrong']){mode=failure;result=await handler(request({username:'operador',password:'test-password'}));assert.equal(result.status,401);assert.equal((await result.json()).error,'Usuário ou senha inválidos.')}
+mode='success';result=await handler(request({username:'operador',password:'test-password'},'https://localhost'));assert.equal(result.status,200);assert.equal(result.headers.get('Access-Control-Allow-Origin'),'https://localhost');
 mode='rate';calls=[];assert.equal((await handler(request({username:'operador',password:'test-password'}))).status,429);assert.equal(calls.length,1);
 assert.equal((await handler(request({username:'operador',password:'test-password'},'https://other.example'))).status,403);
 assert.equal((await handler(request({username:'ab',password:'test-password'}))).status,401);

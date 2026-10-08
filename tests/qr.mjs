@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import QRCode from 'qrcode';
+import jsQR from 'jsqr';
+import {PNG} from 'pngjs';
+import {fleetQr,readFleetQr,defaultMeters} from '../mobile/fleet-qr.js';
+const fleet={id:'TR-600',name:'Trator Abençoada',type:'Trator'};
+const png=PNG.sync.read(await QRCode.toBuffer(fleetQr(fleet),{width:480,margin:4,errorCorrectionLevel:'M'}));
+const decoded=jsQR(new Uint8ClampedArray(png.data),png.width,png.height);
+assert.equal(readFleetQr(decoded.data),fleet.id);
+assert.equal(JSON.parse(decoded.data).name,fleet.name);
+for(const bad of ['https://other.example','600','{}','{"app":"abencoada-diesel","v":2,"fleet":"600"}','{"app":"abencoada-diesel","v":1,"fleet":"../600"}'])assert.throws(()=>readFleetQr(bad));
+assert.deepEqual(defaultMeters('Caminhão'),{km:true,engine:false,elevator:false});
+console.log('QR gerado, decodificado e validado: testes aprovados.');

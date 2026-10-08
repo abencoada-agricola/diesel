@@ -11,6 +11,7 @@ await db.query(`insert into auth.users values($1),($2),($3)`,ids);
 await db.exec(`insert into members values('gestor@example.com','Gestor','admin'),('operador@example.com','João','operator');insert into fleets values('QA','Teste','Trator',true);`);
 await db.exec(await readFile('supabase/usernames.sql','utf8'));
 await db.exec(await readFile('supabase/field-access.sql','utf8'));
+await db.exec(await readFile('supabase/mobile.sql','utf8'));
 assert.equal((await db.query("select username from members where email='gestor@example.com'")).rows[0].username,'gestor');
 async function who(i,email){await db.exec('reset role');await db.query("select set_config('test.uid',$1,false),set_config('test.email',$2,false)",[ids[i],email]);await db.exec('set role authenticated')}
 async function rpc(name,payload){return (await db.query(`select public.${name}($1::jsonb) result`,[JSON.stringify(payload)])).rows[0].result}
@@ -68,4 +69,23 @@ assert.equal(saved.operator,'José do Campo');assert.equal(saved.signature,'Jos�
 await db.exec('reset role;set role anon');
 await assert.rejects(()=>db.query("select diesel_login_target('operador','test')"),/permission denied/);
 await assert.rejects(()=>db.query('select public.diesel_session()'),/permission denied/);
+await assert.rejects(()=>db.query("select diesel_mobile_submit('{}')"),/permission denied/);
+await who(1,'operador@example.com');
+const quick={id:crypto.randomUUID(),fleet:'QA',date:base.date,createdAt:base.createdAt,liters:25,engine:150,measuredFields:{km:false,engine:true,elevator:false},operator:'FALSO',signature:'FALSA',userId:ids[0]};
+const receipt=await rpc('diesel_mobile_submit',quick);assert.equal(receipt.id,quick.id);assert.equal(receipt.previous.engine,101);
+assert.equal((await rpc('diesel_mobile_submit',quick)).duplicate,true);
+assert.equal((await rpc('diesel_mobile_submit',{...quick,id:crypto.randomUUID(),engine:149})).status,422);
+assert.equal((await rpc('diesel_mobile_submit',{...quick,id:crypto.randomUUID(),engine:undefined})).status,422);
+assert.equal((await rpc('diesel_mobile_submit',{...quick,id:crypto.randomUUID(),liters:0})).status,422);
+assert.equal((await rpc('diesel_mobile_submit',{...quick,id:crypto.randomUUID(),measuredFields:{km:true,engine:false,elevator:false}})).status,422);
+await who(0,'gestor@example.com');
+const quickSaved=(await db.query('select diesel_records($1) result',[quick.id])).rows[0].result;
+assert.equal(quickSaved.operator,'João');assert.equal(quickSaved.user_id,ids[1]);assert.equal(quickSaved.capture_mode,'quick');assert.equal(quickSaved.start,null);assert.equal(quickSaved.end,null);assert.equal(quickSaved.km,300);assert.equal(quickSaved.previous_readings.km,300);assert.equal(quickSaved.previous_readings.engine,101);assert.equal(quickSaved.engine,150);
+assert.equal((await rpc('diesel_admin_save',{action:'fleet-meters',id:'QA',meterFields:{km:false,engine:false,elevator:false}})).status,422);
+assert.equal((await rpc('diesel_admin_save',{action:'fleet-meters',id:'QA',meterFields:{km:true,engine:true,elevator:true}})).ok,true);
+await who(1,'operador@example.com');
+assert.equal((await rpc('diesel_mobile_submit',{...quick,id:crypto.randomUUID(),engine:160})).status,422);
+assert.equal((await rpc('diesel_admin_save',{action:'fleet-meters',id:'QA',meterFields:{km:true,engine:false,elevator:false}})).status,403);
+assert.ok((await rpc('diesel_mobile_submit',{...quick,id:crypto.randomUUID(),engine:160,km:400,elevator:250,measuredFields:{km:true,engine:true,elevator:true}})).id);
+await who(2,'naoautorizado@example.com');assert.equal((await rpc('diesel_mobile_submit',{...quick,id:crypto.randomUUID()})).status,403);
 await db.close();console.log('Regras, permissões, catálogo e assinatura: testes aprovados.');

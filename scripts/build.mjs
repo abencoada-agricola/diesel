@@ -7,9 +7,10 @@ if(publicKey.startsWith('sb_secret_'))throw Error('Use a chave pública publisha
 if(publicKey.includes('.')){try{if(JSON.parse(Buffer.from(publicKey.split('.')[1],'base64url')).role==='service_role')throw Error('A chave service_role não pode ser publicada.')}catch(e){if(e.message.includes('service_role'))throw e}}
 }
 await build({stdin:{contents:"export {createClient} from '@supabase/supabase-js'",resolveDir:process.cwd()},bundle:true,format:'esm',platform:'browser',target:'es2022',outfile:'web/vendor.js',minify:true});
+await build({entryPoints:['web/qr-source.js'],bundle:true,format:'esm',platform:'browser',target:'es2022',outfile:'web/qr.js',minify:true});
 await rm('dist',{recursive:true,force:true});await mkdir('dist');await cp('web','dist',{recursive:true});
 if(url&&key)await writeFile('dist/config.js',`export const config=${JSON.stringify({url,publishableKey:key,loginKey})};\n`);
-const names=['app.js','backend.js','config.js','vendor.js','style.css'];const hash=createHash('sha256');for(const name of [...names,'index.html','admin.html','sw.js'])hash.update(await readFile('dist/'+name));const version=hash.digest('hex').slice(0,12);
+const names=['app.js','backend.js','config.js','vendor.js','style.css','qr.js'];const hash=createHash('sha256');for(const name of [...names,'index.html','admin.html','sw.js'])hash.update(await readFile('dist/'+name));const version=hash.digest('hex').slice(0,12);
 const renamed=Object.fromEntries(names.map(name=>[name,name.replace(/\.(js|css)$/,'-'+version+'.$1')]));
 for(const name of ['index.html','admin.html','app.js','backend.js','sw.js']){let content=await readFile('dist/'+name,'utf8');for(const [from,to] of Object.entries(renamed))content=content.replaceAll('./'+from,'./'+to);content=content.replaceAll('diesel-pages-v1','diesel-pages-'+version);await writeFile('dist/'+name,content)}
 for(const [from,to] of Object.entries(renamed))await rename('dist/'+from,'dist/'+to);
