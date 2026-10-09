@@ -16,7 +16,7 @@ export async function signIn(username,password){
   if(!data.access_token||!data.refresh_token)throw Error('Não foi possível entrar. Tente novamente.');
   const {error}=await client.auth.setSession({access_token:data.access_token,refresh_token:data.refresh_token});
   if(error)throw Error('Não foi possível entrar. Tente novamente.');
- }finally{clearTimeout(timer)}
+ }catch(error){if(error.name==='TypeError'||error.name==='AbortError')throw Error('Não foi possível conectar. Conecte o celular à internet e confira a data e hora automáticas.');throw error}finally{clearTimeout(timer)}
 }
 export async function signOut(){await client.auth.signOut({scope:'local'})}
 export async function api(path,options={}){
@@ -39,7 +39,7 @@ export async function api(path,options={}){
   const {data,error}=await client.rpc(rpc,args).abortSignal(controller.signal);
   if(error){const e=Error(error.message||'Não foi possível conectar ao banco.');if(error.code==='42501')e.status=403;if(['PGRST301','PGRST302','PGRST303'].includes(error.code))e.status=401;throw e}
   if(data?.error){const e=Error(data.error);e.status=data.status||422;e.data=data;throw e}return data;
- }finally{clearTimeout(timer)}
+ }catch(error){if(error.name==='TypeError'||error.name==='AbortError')throw Error('Não foi possível conectar. Conecte o celular à internet e confira a data e hora automáticas. Os registros continuam salvos neste aparelho.');throw error}finally{clearTimeout(timer)}
 }
 
 // Campo público: somente catálogo, últimas leituras e inclusão validada no servidor.
