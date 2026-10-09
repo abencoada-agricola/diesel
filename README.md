@@ -13,7 +13,7 @@ The website runs on GitHub Pages. Supabase stores the records and handles admini
 Install the APK on Android 8 or later and sign in online with the username and password assigned in **Equipe e acessos**. The app uses `icone-app.png` as its icon.
 
 1. Enter the **local code** and **material code**. These identify the dispenser location and diesel type. Both are required. Suggestions use the catalog stored in the control database.
-2. Choose **Abastecimento 1.1** or **Transferência 1.2**.
+2. Choose **Abastecimento** or **Transferência**.
 3. For refueling, choose **QR Code** or **Digitar dados do abastecimento**.
 4. Scan the fleet label or enter its code, check the previous readings, and enter the current required meters before refueling.
 5. With QR/dispenser mode, enter the final dispenser reading. Liters are the final reading minus the last verified reading for that local/material. Manual mode asks for liters directly.
