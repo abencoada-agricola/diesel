@@ -39,7 +39,7 @@ Dispenser calculation requires a verified initial reading, entered under **Confi
 
 The fleet catalog was exported from GMAIS. Local/material codes and descriptions consulted in GMAIS are stored in the private control database and downloaded after app login. Operational stock balances and credentials are not bundled into the public repository. This is a catalog snapshot, not a live GMAIS integration. GMAIS user accounts are not imported.
 
-A future integration needs an authorized GMAIS API or read-only backend connection. Database credentials must stay on the server. The app must continue using its cached catalog and queue when disconnected. Until that integration is available, previous readings come from records received by the Diesel control database. Missing GMAIS meter readings must be verified before they are used as initial values.
+A future integration needs an authorized GMAIS API or read-only backend connection. Database credentials must stay on the server. The app must continue using its cached catalog and queue when disconnected. The October 9, 2026 snapshot includes 234 available primary odometer readings, with their source dates. Identifiable tractor/harvester readings seed engine hours; identifiable vehicle readings seed KM. Unclassified values remain a labeled GMAIS reference. Elevator hours and dispenser baselines are not inferred. Previous readings use the greater of the imported baseline and records received by the Diesel control database. Missing GMAIS meter readings must be verified before they are used as initial values.
 
 ## Web field form
 
@@ -94,7 +94,7 @@ For a new Supabase project:
    values ('manager@example.com', 'Manager Name', 'admin');
    ```
 
-4. Run `supabase/usernames.sql`, then `supabase/field-access.sql` , `supabase/mobile.sql`, `supabase/operations.sql`, and `supabase/background-sync.sql`, once and in that order. The username migration assigns existing accounts an initial username based on their email prefix. It can be changed in the dashboard.
+4. Run `supabase/usernames.sql`, then `supabase/field-access.sql` , `supabase/mobile.sql`, `supabase/operations.sql`, `supabase/background-sync.sql`, and `supabase/gmais-readings.sql`, once and in that order. The username migration assigns existing accounts an initial username based on their email prefix. It can be changed in the dashboard.
 5. Deploy `supabase/functions/diesel-login/index.ts` as **diesel-login**, using `supabase/config.toml`. Keep `verify_jwt = true`. The function resolves usernames on the server and checks passwords with Supabase Auth. Login attempts are limited by username and IP address.
 6. Add these repository variables under **Settings → Secrets and variables → Actions → Variables**:
 
