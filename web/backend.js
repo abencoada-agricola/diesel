@@ -24,6 +24,10 @@ export async function api(path,options={}){
  const {data:auth,error:authError}=await client.auth.getSession();if(authError)throw Error('Não foi possível confirmar a conexão. Os registros continuam neste aparelho.');if(!auth.session){const e=Error('Entre com seu usuário e senha.');e.status=401;throw e}
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),18000);
  try{
+  if(path==='team-password'){
+   const response=await fetch(config.url+'/functions/v1/diesel-login',{method:'POST',headers:{'Content-Type':'application/json',apikey:config.publishableKey,Authorization:'Bearer '+auth.session.access_token},body:JSON.stringify({action:'team-password',...JSON.parse(options.body)}),signal:controller.signal});
+   const data=await response.json();if(!response.ok||!data.saved)throw Error(data.error||'Não foi possível salvar a senha.');return data;
+  }
   const [route,query]=path.split('?');let rpc,args={};
   if(route==='session')rpc='diesel_session';
   else if(route==='mobile-submit'){rpc='diesel_mobile_submit';args={payload:JSON.parse(options.body)}}
