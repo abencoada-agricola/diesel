@@ -35,3 +35,5 @@ a,.link-btn{color:#d8e8ad}label,.crumb,.nav button,td,.table-footer{color:#d2e3c
 .field-intro{text-align:center}
 
 dialog{background:#1e4635}
+
+.fleet-row.team-row{flex-wrap:wrap;gap:12px}.team-row>div{flex:1 1 180px;min-width:0}.team-row small{overflow-wrap:anywhere}.team-row>.avatar,.team-row>.pill,.team-row>button{flex-shrink:0}
