@@ -30,6 +30,9 @@ export async function api(path,options={}){
   }
   const [route,query]=path.split('?');let rpc,args={};
   if(route==='session')rpc='diesel_session';
+  else if(route==='device-register'){rpc='diesel_device_register';args={device_id:JSON.parse(options.body).deviceId}}
+  else if(route==='operation-submit'){rpc='diesel_operation_submit';args={payload:JSON.parse(options.body)}}
+  else if(route==='operations-admin'){rpc='diesel_operations_admin';args={payload:options.body?JSON.parse(options.body):null}}
   else if(route==='mobile-submit'){rpc='diesel_mobile_submit';args={payload:JSON.parse(options.body)}}
   else if(route==='records'&&options.method==='POST'){rpc='diesel_submit';args={payload:JSON.parse(options.body)}}
   else if(route==='records'){rpc='diesel_records';args={record_id:new URLSearchParams(query).get('id')}}

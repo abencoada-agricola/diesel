@@ -8,26 +8,38 @@ The website runs on GitHub Pages. Supabase stores the records and handles admini
 - [Field form](https://abencoada-agricola.github.io/diesel/)
 - [Administration](https://abencoada-agricola.github.io/diesel/admin.html)
 
-## Android app
+## Android app: Abastece
 
-Install the APK on Android 8 or later. Android may ask you to allow installation from the browser used to download it. Sign in with the username and password assigned by the manager while connected to the internet.
+Install the APK on Android 8 or later and sign in online with the username and password assigned in **Equipe e acessos**. The app uses `icone-app.png` as its icon.
 
-1. Tap **Ler QR Code** and point the camera at the fleet label. The fleet code can also be entered manually.
-2. Check the previous readings shown for that fleet.
-3. Enter the current reading before refueling and the liters supplied.
-4. Tap **Salvar abastecimento**.
+1. Enter the **local code** and **material code**. These identify the dispenser location and diesel type. Both are required. Suggestions use the catalog stored in the control database.
+2. Choose **Abastecimento 1.1** or **Transferência 1.2**.
+3. For refueling, choose **QR Code** or **Digitar dados do abastecimento**.
+4. Scan the fleet label or enter its code, check the previous readings, and enter the current required meters before refueling.
+5. With QR/dispenser mode, enter the final dispenser reading. Liters are the final reading minus the last verified reading for that local/material. Manual mode asks for liters directly.
+6. Save the entry. The account supplies the worker signature; date and time are automatic.
 
-Each fleet has its own required meters. Trucks and other vehicles initially use KM, tractors use the engine hour meter, and harvesters use engine and elevator hour meters. Managers can change these choices under **Frotas → Escolher leituras**. The app only asks for the selected meters and liters; it does not ask for dispenser readings. Worker name, date, and time are recorded automatically. The server takes the signature from the signed-in account.
+**Transferência** records the old and new local codes while keeping the material. It does not record liters or move inventory in GMAIS. **Observação / ocorrência** records a message linked to the current local and material.
 
-The QR contains a stable fleet code and descriptive information. It does not contain readings that would become outdated. The app uses the latest catalog downloaded from the database, or the saved copy when offline. Only active fleets in that catalog can be selected.
+Managers choose the required fleet meters under **Frotas → Escolher leituras**. Initial defaults are KM for vehicles, engine hours for tractors, and engine/elevator hours for harvesters. Only the selected meters are shown. Numeric inputs use the numeric keyboard and format decimal values automatically. Buttons have pressed feedback and vibration where supported.
 
-The first login needs internet. After a successful login, the app can reopen and save entries without a connection. Pending entries and drafts are stored in the app's IndexedDB on that phone. Keep the app installed and do not clear its data while entries are pending. Signing out is blocked until pending entries have been received or corrected.
+QR labels contain a stable fleet code and descriptions. Readings come from the control database and its saved offline copy, not from the printed QR. Only active catalog fleets can be selected.
 
-With the app open, it checks for a connection every 15 seconds, when resumed, or when **Enviar** is tapped. Entries are sent in capture order and removed from the phone only after a matching database receipt. Retries use the same entry ID to avoid duplicates. If the session expires, reconnect and sign in to the original account; pending entries remain saved.
+### Offline operation
 
-The app checks current readings against its saved readings and earlier pending entries. The database checks again against all received entries for that fleet. Lower readings are rejected. A rejected entry remains available for correction, and later entries for that fleet wait until it is resolved. Other fleets can continue to synchronize. Synchronization is not guaranteed while the app is closed.
+The first login needs internet. After login, the installed app opens offline and saves drafts, catalog data and pending entries in IndexedDB. Earlier pending entries are included when computing local previous readings. The Android worker keeps an encrypted copy of the upload queue and a restricted submission credential in Android Keystore-backed storage. This credential can submit entries for the authorized account; it cannot read history or administer the database. It expires after 90 days and is renewed when the app connects. Removing the team member disables submission.
 
-Each accepted Android entry stores the previous meter readings, the current readings, and a reference to the previous received entry. The dashboard displays this comparison. On a disconnected phone, the previous reading may be older than another phone's latest submission; the database resolves this at synchronization.
+The app checks every 15 seconds, when resumed, when connectivity returns, and when **Enviar** is tapped. WorkManager also schedules uploads with a connected-network requirement, including while the interface is closed. Android controls background execution timing and battery restrictions may delay it. A force-stopped app must be opened again. Pending records are removed only after a matching database receipt. Retries reuse the same ID to prevent duplicates.
+
+Current KM and hour meters cannot be lower than previous received readings. The database validates again when entries synchronize. Conflicts stay on the phone for correction; dependent entries wait. Do not uninstall, clear app data, or switch accounts with pending entries. Sign-out is blocked while the local queue is not empty.
+
+Dispenser calculation requires a verified initial reading, entered under **Configurações → Locais, materiais e registradoras**. Stock balance is not a dispenser reading. A manual-liter entry invalidates that local/material's dispenser baseline because the physical final reading is unknown. A manager must verify it again before dispenser mode is used. Two disconnected phones may have different baselines; the server rejects mismatches for correction instead of silently changing liters.
+
+## GMAIS data
+
+The fleet catalog was exported from GMAIS. Local/material codes and descriptions consulted in GMAIS are stored in the private control database and downloaded after app login. Operational stock balances and credentials are not bundled into the public repository. This is a catalog snapshot, not a live GMAIS integration. GMAIS user accounts are not imported.
+
+A future integration needs an authorized GMAIS API or read-only backend connection. Database credentials must stay on the server. The app must continue using its cached catalog and queue when disconnected. Until that integration is available, previous readings come from records received by the Diesel control database. Missing GMAIS meter readings must be verified before they are used as initial values.
 
 ## Web field form
 
@@ -65,7 +77,7 @@ Administrators sign in with a username and password. They can view and filter re
 
 The dashboard checks for new records every 15 seconds while open and shows unread notices in the bell. Optional browser notifications also require the dashboard to remain open.
 
-**Frotas** manages the fleet catalog and required Android meters. Use **Gerar QR Code** to download or print a fleet label, or **Imprimir todos os QR Codes** for the whole active catalog. Attach the corresponding label to each machine. The APK download is also available on this page. **Configurações** manages access permissions, usernames, and validation rules. Use **Definir senha** in **Equipe e acessos** to create a login or replace an existing password. Passwords require at least 6 characters and confirmation. The server checks the manager’s authenticated session and team membership before calling Supabase Auth; passwords are never stored in the team table. These passwords belong to Diesel and do not change GMAIS credentials. Usernames contain 3–30 letters without accents, numbers, dots, hyphens, or underscores; capitalization does not matter. Email login remains available for existing accounts during the transition.
+**Frotas** manages the fleet catalog and required Android meters. Use **Gerar QR Code** to download or print a fleet label, or **Imprimir todos os QR Codes** for the whole active catalog. Attach the corresponding label to each machine. The APK download is also available on this page. **Transferências e ocorrências** lists app events. **Configurações** manages local/material catalogs, verified dispenser readings, access permissions, usernames, and validation rules. Use **Definir senha** in **Equipe e acessos** to create a login or replace an existing password. Passwords require at least 6 characters and confirmation. The server checks the manager’s authenticated session and team membership before calling Supabase Auth; passwords are never stored in the team table. These passwords belong to Diesel and do not change GMAIS credentials. Usernames contain 3–30 letters without accents, numbers, dots, hyphens, or underscores; capitalization does not matter. Email login remains available for existing accounts during the transition.
 
 Public access is limited to the fleet catalog, latest readings, validation rules, and validated submissions. Stored record history and worker names can only be retrieved by authorized accounts. Administration requires a manager account. Database tables have Row Level Security and cannot be accessed directly by public clients.
 
@@ -82,7 +94,7 @@ For a new Supabase project:
    values ('manager@example.com', 'Manager Name', 'admin');
    ```
 
-4. Run `supabase/usernames.sql`, then `supabase/field-access.sql` and `supabase/mobile.sql`, once and in that order. The username migration assigns existing accounts an initial username based on their email prefix. It can be changed in the dashboard.
+4. Run `supabase/usernames.sql`, then `supabase/field-access.sql` , `supabase/mobile.sql`, `supabase/operations.sql`, and `supabase/background-sync.sql`, once and in that order. The username migration assigns existing accounts an initial username based on their email prefix. It can be changed in the dashboard.
 5. Deploy `supabase/functions/diesel-login/index.ts` as **diesel-login**, using `supabase/config.toml`. Keep `verify_jwt = true`. The function resolves usernames on the server and checks passwords with Supabase Auth. Login attempts are limited by username and IP address.
 6. Add these repository variables under **Settings → Secrets and variables → Actions → Variables**:
 

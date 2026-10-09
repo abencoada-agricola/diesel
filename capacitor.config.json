@@ -1,6 +1,6 @@
 {
   "appId": "br.com.abencoada.diesel",
-  "appName": "Abençoada Diesel",
+  "appName": "Abastece",
   "webDir": "mobile-dist",
   "server": {"androidScheme": "https"},
   "android": {"backgroundColor": "#193c2b"}
